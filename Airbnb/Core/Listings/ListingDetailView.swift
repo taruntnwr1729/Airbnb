@@ -18,7 +18,7 @@ struct ListingDetailView: View {
             .frame(height: 320)
             
             .tabViewStyle(.page)
-            
+            //Detail about Airbnb place
             VStack(alignment: .leading, spacing: 8){
                 Text("Miami Villa")
                     .font(.title)
@@ -41,6 +41,57 @@ struct ListingDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             
             Divider()
+            //HOST INFORMATION VIEW
+            
+            HStack(){
+                VStack(alignment: .leading, spacing: 4){
+                    Text("Entire villa owned by Shah Rukh")
+                        .font(.headline)
+                        .frame(width: 250, alignment: .leading)
+                    HStack(spacing: 2){
+                        Text("4 guests -")
+                        Text("4 bedrooms -")
+                        Text("4 bed - ")
+                        Text("3 baths ")
+                    }
+                    .font(.caption)
+                }
+                .frame(width: 300, alignment: .leading)
+                
+                Spacer()
+             Image("profilepic")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 64, height: 64)
+                    .clipShape(Circle())
+            }
+            .padding()
+            
+            Divider()
+            
+            //listing features
+            
+            VStack(alignment: .leading, spacing: 16){
+                ForEach(0..<2, id: \.self){ feature in
+                    HStack(spacing: 12){
+                        Image(systemName: "medal")
+                        VStack(alignment: .leading){
+                            Text("Superhost")
+                                .font(.footnote)
+                                .fontWeight(.semibold)
+                            Text("Superhosts are experience, highly rated hosts who are committed to providing great stars for guests")
+                                .font(.caption)
+                            
+                        }
+                        Spacer()
+                    }
+                    
+                }
+            }
+            
+            .padding()
+            
+            
             
         }
         
