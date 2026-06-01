@@ -16,15 +16,7 @@ struct ListingItemView: View {
             
             //images
             //this adds horizontal images
-            TabView{
-                ForEach(images, id: \.self){image in
-                    Image(image)
-                        .resizable()
-                        .scaledToFill()
-                        
-                }
-                
-            }
+            ListingImageCarouselView()
             .frame(height: 320)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .tabViewStyle(.page)
@@ -36,6 +28,8 @@ struct ListingItemView: View {
                 //details
                 VStack(alignment: .leading){
                     Text("Miami, Florida")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.black)
                     Text("12 mi Away")
                         .foregroundStyle(.gray)
                     Text("Nov 3 - 10 ")
@@ -46,6 +40,7 @@ struct ListingItemView: View {
                         Text("Night")
                         
                     }
+                    .foregroundStyle(.black)
                     
                     
                     
@@ -60,6 +55,7 @@ struct ListingItemView: View {
                     
                 }
                 .font(.footnote)
+                .foregroundStyle(.black)
                 
             }
         }
