@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ListingDetailView: View {
-    
+
+    @Environment(\.dismiss) var dismiss
     
     
     var body: some View {
         ScrollView{
+            ZStack(alignment: .topLeading, ){
+                ListingImageCarouselView()
+                    .frame(height: 320)
+                
+            }
             
-            ListingImageCarouselView()
-            .frame(height: 320)
             
-            .tabViewStyle(.page)
+                .tabViewStyle(.page)
             //Detail about Airbnb place
             VStack(alignment: .leading, spacing: 8){
                 Text("Miami Villa")
@@ -59,7 +64,7 @@ struct ListingDetailView: View {
                 .frame(width: 300, alignment: .leading)
                 
                 Spacer()
-             Image("profilepic")
+                Image("profilepic")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 64, height: 64)
@@ -91,12 +96,112 @@ struct ListingDetailView: View {
             
             .padding()
             
+            Divider()
+            //bedroom views
+            VStack(alignment: .leading, spacing: 16){
+                Text("Where you'll sleep")
+                    .font(.headline)
+                ScrollView(.horizontal, showsIndicators: false){
+                    HStack(spacing: 16 ){
+                        ForEach(0..<5){bedroom in
+                            VStack(){
+                                Image(systemName: "bed.double")
+                                Text("Bedroom \(bedroom)")
+                            }
+                            .frame(width: 132, height: 100)
+                            .overlay{
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(lineWidth: 1)
+                                    .foregroundStyle(.gray)
+                            }
+                            
+                            
+                        }
+                        
+                    }
+                    
+                }
+                .scrollTargetBehavior(.paging)
+                
+            }
+            .padding()
+            //basic ammenities
+            Divider()
+            VStack(alignment: .leading, spacing: 16){
+                Text("What this place offers")
+                    .font(.headline)
+                ForEach(0..<5){feature in
+                    HStack{
+                        Image(systemName: "wifi")
+                            .frame(width: 32)
+                        Text("wifi")
+                        Spacer()
+                    }
+                    
+                }
+            }
+            .padding()
             
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 16){
+                
+                Text("Where you'll be")
+                    .font(.headline)
+                
+                Map()
+                    .frame(height: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+            }
+            
+            .padding()
+            
+        }
+        .ignoresSafeArea()
+        .padding(.bottom, 64)
+        .overlay(alignment: .bottom){
+            VStack{
+                Divider()
+                    .padding(.bottom)
+                HStack{
+                    VStack(alignment: .leading){
+                        Text("$500")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                        Text("Total before taxes")
+                        
+                        Text("Oct 15 - 20")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                            .underline()
+                        
+                    }
+                    Spacer()
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Reserve")
+                            .foregroundStyle(.white)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .frame(width: 140, height: 40)
+                            .background(Color.pink)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    
+                }
+                .padding(.horizontal, 32)
+            }
+            .background(.white)
             
         }
         
     }
-}
+    
+        
+    }
 
 #Preview {
     ListingDetailView()
