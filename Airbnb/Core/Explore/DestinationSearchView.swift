@@ -5,6 +5,8 @@
 //  Created by Tarun Tanwar on 02/06/26.
 //
 
+//HARDEST PART OF THIS PROJECT
+
 import SwiftUI
 
 enum DestinationSearchOptions{
@@ -17,20 +19,53 @@ enum DestinationSearchOptions{
 
 struct DestinationSearchView: View {
     @Binding var show: Bool
+    //We defined this for clear button
     @State private var destination = ""
+    //this variable is for clicking animation and functionality
     @State private var selectedOption: DestinationSearchOptions = .nothing
+    //these variables are for date picker
+    @State private var startDate = Date()
+    @State private var endDate = Date()
+    //this is for stepper function
+    @State private var numGuests = 0
+    
     
     var body: some View {
+        
+//-------------UPPER FUNCTIONALITIES---------------
         VStack{
-            Button{
-                withAnimation(.snappy){
-                    show.toggle()
+            HStack{
+                Button{
+                    withAnimation(.snappy){
+                        show.toggle()
+                    }
+                }label:{
+                    Image(systemName: "xmark.circle")
+                        .imageScale(.large)
+                        .foregroundStyle(.black)
+                        .fontWeight(.semibold)
                 }
-            }label:{
-                Image(systemName: "xmark.circle")
-                    .imageScale(.large)
+                Spacer()
+                
+                if !destination.isEmpty{
+                    Button("Clear"){
+                        
+                        destination = ""
+                        
+                    }
                     .foregroundStyle(.black)
+                    .font(.subheadline)
+                }
             }
+            .padding()
+            
+//--------------------------END------------------------------------------
+            
+            
+//-------------------DESTINATION BAR-------------------------------
+            
+            
+            
             VStack(alignment: .leading){
                 if (selectedOption == .location){
                     Text("Where to?")
@@ -68,35 +103,28 @@ struct DestinationSearchView: View {
                 }
             }
             
-            VStack(alignment: .leading, spacing: 5){
+            
+//--------------------------END------------------------------------------
+                        
+            
+//-------------DATES BAR---------------------------
+            VStack(alignment: .leading){
                 if (selectedOption == .dates) {
                     Text("When's your trip?")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    HStack{
-                        Text("From")
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
-                        Spacer()
+                    VStack{
                         
-                        Text("Oct 6, 2026")
-                            
-                            
-                    }
-                    Divider()
-                    
-                    HStack{
-                        Text("To")
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
+                        //I Liked this functionality
+                        DatePicker("From", selection: $startDate, displayedComponents: .date)
                         
-                        Spacer()
-                        Text("Oct 10, 2026")
-                            
-                            
+                        Divider()
+                        
+                        DatePicker("To", selection: $startDate, displayedComponents: .date)
                     }
-                    
-                    
+                    .foregroundStyle(.gray)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
                 }else {
                     
                     ExtractedView(title: "When", description: "Add dates")
@@ -104,7 +132,7 @@ struct DestinationSearchView: View {
                         }
                     
                 }.padding()
-                .frame(height: selectedOption == .dates ? 120 : 64)
+                .frame(height: selectedOption == .dates ? 180 : 64)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding()
@@ -116,7 +144,11 @@ struct DestinationSearchView: View {
                     }
             }
             
+//--------------------------END------------------------------------------
             
+            
+            
+//-------------GUESTS BAR---------------------------
             VStack(alignment: .leading, spacing: 5){
                 if (selectedOption == .guests) {
                         Text("Who's coming?")
@@ -124,15 +156,20 @@ struct DestinationSearchView: View {
                             .fontWeight(.semibold)
                         Spacer()
                         HStack{
-                            Text("Adults")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            Spacer()
+                            
+                            
+                            Stepper{
+                                Text("\(numGuests) Adults")
+                            }onIncrement: {
+                                numGuests = numGuests + 1
+                            } onDecrement: {
+                                //nice conditional statement
+                                guard numGuests > 0 else {return}
+                                numGuests = numGuests - 1
+                            }
                         
                     }
                     Spacer()
-                    
-                    
                     
                 }else {
                     
@@ -151,25 +188,22 @@ struct DestinationSearchView: View {
                         selectedOption = .guests
                     }
                 }
-            
-            
-           
-            
-               
-                
         }
-        
+        Spacer()
     }
 }
-    
+//--------------------------END------------------------------------------
+
+
+
 #Preview {
         DestinationSearchView(show: .constant(false))
     }
     
 
-    
+
+
 struct ExtractedView: View {
-        // 1. Define the properties (Swift automatically creates an initializer for these)
     let title: String
     let description: String
         
