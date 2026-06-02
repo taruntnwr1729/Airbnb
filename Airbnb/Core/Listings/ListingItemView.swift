@@ -17,7 +17,7 @@ struct ListingItemView: View {
             //images
             //this adds horizontal images
             ListingImageCarouselView()
-            .frame(height: 320)
+            .frame(height: 310)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .tabViewStyle(.page)
             //this function is important for swiping
