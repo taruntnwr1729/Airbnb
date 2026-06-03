@@ -18,9 +18,11 @@ enum DestinationSearchOptions{
 
 
 struct DestinationSearchView: View {
+    //Search functionality
+    @ObservedObject var viewModel: ExploreViewModel
     @Binding var show: Bool
     //We defined this for clear button
-    @State private var destination = ""
+    
     //this variable is for clicking animation and functionality
     @State private var selectedOption: DestinationSearchOptions = .nothing
     //these variables are for date picker
@@ -47,10 +49,10 @@ struct DestinationSearchView: View {
                 }
                 Spacer()
                 
-                if !destination.isEmpty{
+                if !viewModel.searchLocation.isEmpty{
                     Button("Clear"){
                         
-                        destination = ""
+                        viewModel.searchLocation = ""
                         
                     }
                     .foregroundStyle(.black)
@@ -74,8 +76,12 @@ struct DestinationSearchView: View {
                     HStack{
                         Image(systemName: "magnifyingglass")
                             .imageScale(.small)
-                        TextField("Search Destination", text: $destination)
+                        TextField("Search Destination", text: $viewModel.searchLocation)
                             .font(.subheadline)
+                            .onSubmit{
+                                viewModel.updateListingsForLocation()
+                                show.toggle()
+                            }
                     }
                     .frame(height: 44)
                     .padding(.horizontal)
@@ -197,7 +203,7 @@ struct DestinationSearchView: View {
 
 
 #Preview {
-        DestinationSearchView(show: .constant(false))
+    DestinationSearchView(viewModel: ExploreViewModel(service: ExploreService()), show: .constant(false))
     }
     
 
