@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Listing: Identifiable, Codable {
+struct Listing: Identifiable, Codable, Hashable {
     let id: String
     let ownerUid: String
     let ownerName: String // Fixed typo: ownnerName -> ownerName
@@ -19,6 +19,7 @@ struct Listing: Identifiable, Codable {
     var pricePerNight: Int
     let latitude: Double
     let longitude: Double
+    var imageURLs: [String]
     let address: String
     let city: String
     let state: String
